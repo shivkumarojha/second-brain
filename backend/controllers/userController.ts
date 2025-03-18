@@ -1,7 +1,7 @@
 import type { Request, Response } from "express"
 import { z } from "zod"
 import { UserModel } from "../models/userModels"
-
+import jwt from "jsonwebtoken"
 const userZodSchema = z.object({
     name: z.string(),
     username: z.string().min(3).max(30),
@@ -9,8 +9,51 @@ const userZodSchema = z.object({
 })
 
 
-export const signin = (req: Request, res: Response) => {
-    res.send("Sign in controller")
+export const signin = async (req: Request, res: Response) => {
+    const parsedData = userZodSchema.omit({ name: true }).safeParse(req.body)
+    if (!parsedData.success) {
+        return res.status(400).json({
+            message: "Invalid Inputs"
+        })
+    }
+
+    const { username, password } = parsedData.data
+    // Check if the use exist in the database
+    try {
+        const user = await UserModel.findOne({ username })
+        if (!user) {
+            return res.status(401).json({
+                message: "User doesn't exists, kindly sign up "
+            })
+        }
+
+        // check if the password matched
+        const isPasswordMatch = await Bun.password.verify(password, user.password)
+
+        if (!isPasswordMatch) {
+            return res.status(401).json({
+                message: "Password doesn't matched, retry"
+            })
+        }
+        const jwtPayload = {
+            id: user.id,
+            username: user.username
+        }
+        // send the jwt token
+        if(!process.env.JWT_SECRET) {
+            throw new Error("JWT_SECRET is not defined")
+        }
+        const token = jwt.sign(jwtPayload, process.env.JWT_SECRET as string, {expiresIn: "30d"})
+        return res.status(200).json({
+            message: "Log in Success",
+            token
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: "Something went wrong",
+            error
+        })
+    }
 }
 
 export const signup = async (req: Request, res: Response) => {
