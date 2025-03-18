@@ -1,16 +1,13 @@
 import express from "express"
+import { brainShare, lookSharedBrain } from "../controllers/brainController"
 
 const brainRoutes = express.Router()
 
 
 // Share your own brain content
-brainRoutes.post("/share", (req, res) => {
-    res.send("Share brain")
-})
+brainRoutes.post("/share", brainShare)
 
 // Another users share brain content
-brainRoutes.get("/:shareLink", (req, res) => {
-    res.send("This is your shared links")
-})
+brainRoutes.get("/:shareLink", lookSharedBrain)
 
 export default brainRoutes
