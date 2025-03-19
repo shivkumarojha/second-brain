@@ -38,8 +38,27 @@ export const addContent = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteContent = (req: Request, res: Response) => {
-    res.send("Delete content")
+
+export const deleteContent = async(req: Request, res: Response) => {
+    const contentId = req.params.id
+    try {
+        const content = await ContentModel.findOneAndDelete({
+            _id: contentId
+        })
+        if (!content) {
+            return res.status(400).json({
+                message: "Content doesn't exist"
+            })
+        }
+        res.status(200).json({
+            message: "Content deleted"
+        })
+    } catch (error) {
+        return res.status(404).json({
+            message: "Some error occured",
+            error
+        })
+    }
 }
 
 
