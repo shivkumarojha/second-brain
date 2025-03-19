@@ -6,14 +6,14 @@ const contentRouter = express.Router()
 
 
 // Add a new content
-contentRouter.post("/",authMiddleware, addContent)
+contentRouter.post("/", authMiddleware, addContent)
 
 
 // Delete a content with content id
-contentRouter.delete("/:id", deleteContent) 
+contentRouter.delete("/:id", authMiddleware, deleteContent)
 
 // Get all the content of the user
-contentRouter.get("/", getAllContent)
+contentRouter.get("/", authMiddleware, getAllContent)
 
 
 export default contentRouter

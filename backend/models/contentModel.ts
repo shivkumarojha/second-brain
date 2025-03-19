@@ -6,7 +6,7 @@ const contentSchema = new mongoose.Schema({
         required: true
     },
     link: {
-        type: URL,
+        type: String,
         required: true
     },
     title: {
