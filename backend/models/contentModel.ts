@@ -16,6 +16,10 @@ const contentSchema = new mongoose.Schema({
     tags: {
         type: [String],
         required: true
+    },
+    share: {
+        type: Boolean,
+        default: false
     }
 })
 
