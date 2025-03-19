@@ -39,7 +39,7 @@ export const addContent = async (req: Request, res: Response) => {
 }
 
 
-export const deleteContent = async(req: Request, res: Response) => {
+export const deleteContent = async (req: Request, res: Response) => {
     const contentId = req.params.id
     try {
         const content = await ContentModel.findOneAndDelete({
@@ -62,6 +62,22 @@ export const deleteContent = async(req: Request, res: Response) => {
 }
 
 
-export const getAllContent = (req: Request, res: Response) => {
-    res.send("All the content")
+export const getAllContent = async (req: Request, res: Response) => {
+    try {
+        const contents = await ContentModel.find()
+        if (!contents) {
+            return res.status(404).json({
+                message: "No contents available"
+            })
+        }
+        return res.status(200).json({
+            message: "Fetched contents successfully",
+            contents
+        })
+    } catch (error) {
+        return res.status(404).json({
+            message: "Something went wrong",
+            error
+        })
+    }
 }
