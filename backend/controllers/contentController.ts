@@ -1,6 +1,7 @@
 import type { Request, Response } from "express"
 
 export const addContent = (req: Request, res: Response) => {
+    
     res.send("Content Route")
 }
 

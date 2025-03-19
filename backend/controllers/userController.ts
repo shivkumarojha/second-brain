@@ -40,10 +40,10 @@ export const signin = async (req: Request, res: Response) => {
             username: user.username
         }
         // send the jwt token
-        if(!process.env.JWT_SECRET) {
+        if (!process.env.JWT_SECRET) {
             throw new Error("JWT_SECRET is not defined")
         }
-        const token = jwt.sign(jwtPayload, process.env.JWT_SECRET as string, {expiresIn: "30d"})
+        const token = jwt.sign(jwtPayload, process.env.JWT_SECRET as string, { expiresIn: "30d" })
         return res.status(200).json({
             message: "Log in Success",
             token
