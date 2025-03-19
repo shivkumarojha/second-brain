@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import { UserModel } from "./userModel"
 
 const contentSchema = new mongoose.Schema({
     type: {
@@ -20,7 +21,13 @@ const contentSchema = new mongoose.Schema({
     share: {
         type: Boolean,
         default: false
+    },
+    user: {
+        type: mongoose.Types.ObjectId,
+        ref: UserModel
     }
+}, {
+    timestamps: true
 })
 
 

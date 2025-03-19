@@ -59,7 +59,7 @@ export const signin = async (req: Request, res: Response) => {
 export const signup = async (req: Request, res: Response) => {
     // get the user details from the body
     const parsedData = userZodSchema.safeParse(req.body)
-
+console.log(parsedData.data)
     // check if the user input is valid or not
     if (!parsedData.success) {
         return res.status(400).json({

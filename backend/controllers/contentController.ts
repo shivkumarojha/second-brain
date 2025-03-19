@@ -1,6 +1,7 @@
 import type { Request, Response } from "express"
 import z from "zod"
 import { ContentModel } from "../models/contentModel"
+import { userType } from "../middlewares/authMiddleware"
 const contentZodSchema = z.object({
     type: z.string(),
     link: z.string().url(),
@@ -10,6 +11,8 @@ const contentZodSchema = z.object({
 })
 export const addContent = async (req: Request, res: Response) => {
     const parsedData = contentZodSchema.safeParse(req.body)
+    const user: userType = req.user
+
     if (!parsedData.success) {
         return res.status(409).json({
             message: "Invalid inputs",
@@ -23,7 +26,8 @@ export const addContent = async (req: Request, res: Response) => {
             type,
             link,
             title,
-            tags
+            tags,
+            user: user?.id
         })
         if (content) {
             return res.status(200).json({
@@ -43,7 +47,8 @@ export const deleteContent = async (req: Request, res: Response) => {
     const contentId = req.params.id
     try {
         const content = await ContentModel.findOneAndDelete({
-            _id: contentId
+            _id: contentId,
+            user: req.user?.id
         })
         if (!content) {
             return res.status(400).json({
@@ -64,7 +69,9 @@ export const deleteContent = async (req: Request, res: Response) => {
 
 export const getAllContent = async (req: Request, res: Response) => {
     try {
-        const contents = await ContentModel.find()
+        const contents = await ContentModel.find({
+            user: req.user?.id
+        })
         if (!contents) {
             return res.status(404).json({
                 message: "No contents available"

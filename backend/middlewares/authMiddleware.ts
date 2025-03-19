@@ -1,6 +1,12 @@
 import type { Request, Response, NextFunction } from "express"
 import jwt, { type JwtPayload } from "jsonwebtoken"
+
+interface userType {
+    id: string,
+    username: string,
+}
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+
     const authHeader = req.headers.authorization
     const token = authHeader?.split(" ")[1]
 
@@ -17,7 +23,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
                     message: "Unauthorized access, JWT malformed"
                 })
             } else {
-                req.user = decoded as JwtPayload
+                req.user = decoded as userType 
                 next()
             }
         })
