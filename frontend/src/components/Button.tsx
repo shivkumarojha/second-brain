@@ -3,7 +3,7 @@ import { ReactElement } from "react"
 interface ButtonProps {
   variant: "primary" | "secondary"
   text: string
-  startIcon: ReactElement
+  startIcon?: ReactElement
 }
 
 const variantClasses = {
@@ -12,7 +12,7 @@ const variantClasses = {
 }
 export default function Button({ variant, text, startIcon }: ButtonProps) {
   return (
-    <button className={`${variantClasses[variant] + " " + "flex p-3 rounded-xl"}`}>
+    <button className={`${variantClasses[variant] + " " + "flex p-3 rounded-xl items-center"}`}>
       {startIcon}
       {text}
     </button>
