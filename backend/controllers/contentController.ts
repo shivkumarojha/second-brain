@@ -1,11 +1,12 @@
 import type { Request, Response } from "express"
 import z from "zod"
 import { ContentModel } from "../models/contentModel"
-import { userType } from "../middlewares/authMiddleware"
+import type { userType } from "../middlewares/authMiddleware"
+
 const contentZodSchema = z.object({
-    type: z.string(),
     link: z.string().url(),
     title: z.string(),
+    contentTypeId: z.string(),
     tags: z.string().array()
 
 })
@@ -20,10 +21,10 @@ export const addContent = async (req: Request, res: Response) => {
         })
     }
 
-    const { type, link, title, tags } = parsedData.data
+    const { contentTypeId, link, title, tags } = parsedData.data
     try {
         const content = await ContentModel.create({
-            type,
+            contentTypeId,
             link,
             title,
             tags,

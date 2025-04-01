@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express"
 import jwt, { type JwtPayload } from "jsonwebtoken"
 
-interface userType {
+export interface userType {
     id: string,
     username: string,
 }

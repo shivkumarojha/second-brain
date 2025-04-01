@@ -1,7 +1,6 @@
 import type { Request, Response } from "express"
 import { z } from "zod"
 import { UserModel } from "../models/userModel"
-import jwt from "jsonwebtoken"
 import createJwtToken from "../utils/jwtUtil"
 import { ContentTypeModel } from "../models/contentTypeModel"
 const userZodSchema = z.object({
