@@ -2,10 +2,6 @@ import mongoose from "mongoose"
 import { UserModel } from "./userModel"
 
 const contentSchema = new mongoose.Schema({
-    type: {
-        type: String,
-        required: true
-    },
     link: {
         type: String,
         required: true
@@ -14,16 +10,12 @@ const contentSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    tags: {
-        type: [String],
-        required: true
-    },
     share: {
         type: Boolean,
         default: false
     },
     user: {
-        type: mongoose.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: UserModel
     }
 }, {
