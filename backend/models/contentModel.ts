@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import { UserModel } from "./userModel"
+import { ContentTypeModel } from "./contentTypeModel"
 
 const contentSchema = new mongoose.Schema({
     link: {
@@ -14,9 +15,13 @@ const contentSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    user: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: UserModel
+    },
+    contentTypeId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: ContentTypeModel
     }
 }, {
     timestamps: true

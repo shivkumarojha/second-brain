@@ -3,6 +3,7 @@ import { z } from "zod"
 import { UserModel } from "../models/userModel"
 import jwt from "jsonwebtoken"
 import createJwtToken from "../utils/jwtUtil"
+import { ContentTypeModel } from "../models/contentTypeModel"
 const userZodSchema = z.object({
     name: z.string(),
     username: z.string().min(3).max(30),
@@ -108,7 +109,40 @@ export const signup = async (req: Request, res: Response) => {
 
 // choose Default Content types  : Auth Flow
 
-export const chooseDefaultContentTypes = (req: Request, res: Response) => {
-    // TODO: get the content Types
-    // Return save the content types and return success
+// interface for default choosen content
+const contentTypeSchema = z.object({
+    contentType: z.string().array()
+})
+export const chooseDefaultContentTypes = async (req: Request, res: Response) => {
+    const parsedData = contentTypeSchema.safeParse(req.body)
+    const userId = req.user.id
+    if (!parsedData.success) {
+        return res.status(400).json({
+            message: "Invalid Inputs"
+        })
+    }
+
+    try {
+        const contentTypeData = parsedData.data.contentType.map(contentType => ({
+            contentType,
+            userId
+        }))
+
+        // Add other as a field to this
+        contentTypeData.push({contentType: "Others", userId})
+        const contentType = await ContentTypeModel.insertMany(contentTypeData)
+        if (!contentType) {
+            return res.status(404).json({
+                message: "Something went wrong while adding content types, Try again later!!!"
+            })
+        }
+        return res.status(200).json({
+            message: "Content is created"
+        })
+    } catch (error) {
+        return res.status(404).json({
+            message: "Error occured",
+            error
+        })
+    }
 }

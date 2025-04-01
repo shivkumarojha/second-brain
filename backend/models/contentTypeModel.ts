@@ -1,19 +1,16 @@
 import mongoose, { mongo } from "mongoose";
 import { UserModel } from "./userModel";
-import { ContentModel } from "./contentModel";
 
 const contentTypeSchema = new mongoose.Schema({
     contentType: {
         type: String,
         unique: true,
+        required: true
     },
-    contentId: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: ContentModel
-    },
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: UserModel
+        ref: UserModel,
+        required: true
     }
 })
 
