@@ -1,5 +1,6 @@
 import express from "express"
-import { signin, signup } from "../controllers/userController"
+import { chooseDefaultContentTypes, signin, signup } from "../controllers/userController"
+import { authMiddleware } from "../middlewares/authMiddleware"
 
 const userRouter = express.Router()
 
@@ -10,4 +11,7 @@ userRouter.post("/signin",signin)
 // Sign up route
 userRouter.post("/signup",signup)    
 
+
+// Choose Default Content Types 
+userRouter.post("/choose-default-types",authMiddleware, chooseDefaultContentTypes)
 export default userRouter

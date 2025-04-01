@@ -2,6 +2,7 @@ import type { Request, Response } from "express"
 import { z } from "zod"
 import { UserModel } from "../models/userModel"
 import jwt from "jsonwebtoken"
+import createJwtToken from "../utils/jwtUtil"
 const userZodSchema = z.object({
     name: z.string(),
     username: z.string().min(3).max(30),
@@ -35,15 +36,12 @@ export const signin = async (req: Request, res: Response) => {
                 message: "Password doesn't matched, retry"
             })
         }
+
         const jwtPayload = {
             id: user.id,
             username: user.username
         }
-        // send the jwt token
-        if (!process.env.JWT_SECRET) {
-            throw new Error("JWT_SECRET is not defined")
-        }
-        const token = jwt.sign(jwtPayload, process.env.JWT_SECRET as string, { expiresIn: "30d" })
+        const token = await createJwtToken(jwtPayload)
         return res.status(200).json({
             message: "Log in Success",
             token
@@ -59,7 +57,7 @@ export const signin = async (req: Request, res: Response) => {
 export const signup = async (req: Request, res: Response) => {
     // get the user details from the body
     const parsedData = userZodSchema.safeParse(req.body)
-console.log(parsedData.data)
+    console.log(parsedData.data)
     // check if the user input is valid or not
     if (!parsedData.success) {
         return res.status(400).json({
@@ -70,10 +68,10 @@ console.log(parsedData.data)
 
     const { name, username, password } = parsedData.data
     // check if the user with username exist
-    const userExists = await UserModel.findOne({
+    const user = await UserModel.findOne({
         username
     })
-    if (userExists) {
+    if (user) {
         return res.status(409).json({
             message: "User already exist with this username"
         })
@@ -81,12 +79,21 @@ console.log(parsedData.data)
 
     // Hash password
     const hashedPassword = await Bun.password.hash(password)
-    console.log(hashedPassword)
     try {
-        await UserModel.create({
+        const newUser = await UserModel.create({
             name,
             username,
             password: hashedPassword
+        })
+
+        const jwtPayload = {
+            id: newUser.id,
+            username: newUser.username
+        }
+        const token = await createJwtToken(jwtPayload)
+        res.status(200).json({
+            message: "user is created",
+            token
         })
     } catch (error) {
         return res.status(500).json({
@@ -95,7 +102,13 @@ console.log(parsedData.data)
         })
     }
 
-    res.status(200).json({
-        message: "user is created"
-    })
+}
+
+
+
+// choose Default Content types  : Auth Flow
+
+export const chooseDefaultContentTypes = (req: Request, res: Response) => {
+    // TODO: get the content Types
+    // Return save the content types and return success
 }
