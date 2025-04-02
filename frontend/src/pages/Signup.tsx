@@ -27,10 +27,10 @@ export default function Signup() {
   return (
     <div className="h-screen flex flex-col justify-center items-center ">
       <div className="text-3xl font-semibold">Sign up</div>
-      <InputBox reference={usernameRef} type="text" placeholder="username" />
-      <InputBox reference={fullNameRef} type="text" placeholder="Full Name" />
+      <InputBox ref={usernameRef} type="text" placeholder="username" />
+      <InputBox ref={fullNameRef} type="text" placeholder="Full Name" />
       <InputBox
-        reference={passwordRef}
+        ref={passwordRef}
         type="password"
         placeholder="password"
       />
