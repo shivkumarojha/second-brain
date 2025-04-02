@@ -3,11 +3,14 @@ import userRouter from "./routes/userRoutes"
 import contentRouter from "./routes/contentRoutes"
 import brainRoutes from "./routes/brainRoutes"
 import mongoose from "mongoose"
+import cors from "cors"
 const app = express()
 
 // body parser
 app.use(express.json())
 
+// Cors 
+app.use(cors())
 app.get("/health", (req, res) => {
     res.send("Hello")
 })
