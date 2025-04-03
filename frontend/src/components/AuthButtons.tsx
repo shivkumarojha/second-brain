@@ -5,7 +5,7 @@ interface AuthButtonProps {
 }
 
 const defaultButtonStyles =
-  "px-32 py-2 m-2 rounded-lg bg-black text-white font-semibold"
+  "w-full py-2 m-2 rounded-lg bg-black text-white font-semibold"
 
 const typeStyles = {
   "primary": "bg-blue-400 hover:bg-gradient-to-r from-blue-200 to-blue-900 ",

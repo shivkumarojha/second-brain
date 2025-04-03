@@ -19,22 +19,20 @@ export default function Signup() {
       body: JSON.stringify({
         username,
         password,
-       name: fullName,
+        name: fullName,
       }),
     })
     console.log(user)
   }
   return (
-    <div className="h-screen flex flex-col justify-center items-center ">
-      <div className="text-3xl font-semibold">Sign up</div>
-      <InputBox ref={usernameRef} type="text" placeholder="username" />
-      <InputBox ref={fullNameRef} type="text" placeholder="Full Name" />
-      <InputBox
-        ref={passwordRef}
-        type="password"
-        placeholder="password"
-      />
-      <AuthButton text="Sign Up" type="primary" onClick={handleSignUp} />
+    <div className="flex items-center justify-center">
+      <div className="h-screen flex flex-col justify-center items-center ">
+        <div className="text-3xl font-semibold">Sign up</div>
+        <InputBox ref={usernameRef} type="text" placeholder="username" />
+        <InputBox ref={fullNameRef} type="text" placeholder="Full Name" />
+        <InputBox ref={passwordRef} type="password" placeholder="password" />
+        <AuthButton text="Sign Up" type="primary" onClick={handleSignUp} />
+      </div>
     </div>
   )
 }
