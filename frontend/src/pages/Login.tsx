@@ -1,5 +1,4 @@
 import { useRef } from "react"
-import Button from "../components/Button"
 import InputBox from "../components/InputBox"
 import AuthButton from "../components/AuthButtons"
 

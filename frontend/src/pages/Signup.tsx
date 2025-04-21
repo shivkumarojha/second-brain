@@ -1,11 +1,13 @@
 import { useRef } from "react"
 import AuthButton from "../components/AuthButtons"
 import InputBox from "../components/InputBox"
+import { useNavigate } from "react-router"
 
 export default function Signup() {
   const usernameRef = useRef<HTMLInputElement>(null)
   const fullNameRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
+  const navigate = useNavigate()
 
   async function handleSignUp() {
     const username = usernameRef.current?.value
@@ -22,7 +24,12 @@ export default function Signup() {
         name: fullName,
       }),
     })
-    console.log(user)
+    const data = await user.json()
+    const token = data.token
+    // Save token to local storage
+    console.log(token)
+    localStorage.setItem("token", token)
+    navigate("/choose-default-category")
   }
   return (
     <div className="flex items-center justify-center">
